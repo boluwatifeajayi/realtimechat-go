@@ -1,0 +1,95 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "Chat App API"
+host: "localhost:8080"
+basePath: "/api"
+schemes:
+  - "http"
+paths:
+  /register:
+    post:
+      summary: "Register a new user"
+      consumes:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        "200":
+          description: "User registered successfully"
+        "400":
+          description: "Invalid input"
+  /login:
+    post:
+      summary: "Login a user"
+      consumes:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/User"
+      responses:
+        "200":
+          description: "User logged in successfully"
+        "401":
+          description: "Invalid email or password"
+  /secured/send-message:
+    post:
+      summary: "Send a message"
+      consumes:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          required: true
+          schema:
+            $ref: "#/definitions/Message"
+      responses:
+        "200":
+          description: "Message sent successfully"
+        "401":
+          description: "Unauthorized"
+  /secured/messages/{sender_id}/{receiver_id}:
+    get:
+      summary: "Get messages between two users"
+      parameters:
+        - in: "path"
+          name: "sender_id"
+          required: true
+          type: "string"
+        - in: "path"
+          name: "receiver_id"
+          required: true
+          type: "string"
+      responses:
+        "200":
+          description: "Messages retrieved successfully"
+        "401":
+          description: "Unauthorized"
+definitions:
+  User:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+      email:
+        type: "string"
+      password:
+        type: "string"
+      profile_pic:
+        type: "string"
+  Message:
+    type: "object"
+    properties:
+      sender_id:
+        type: "string"
+      receiver_id:
+        type: "string"
+      content:
+        type: "string"
